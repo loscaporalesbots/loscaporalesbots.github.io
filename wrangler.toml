@@ -1,0 +1,6 @@
+name = "los-caporales-quejas"
+main = "api/quejas.js"
+compatibility_date = "2026-09-27"
+
+[observability]
+enabled = true

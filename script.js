@@ -1,4 +1,5 @@
 const WHATSAPP_BASE = "https://wa.me/524793457847";
+const QUEJAS_API_URL = "https://los-caporales-quejas.loscaporales-quejas-2026.workers.dev/";
 const currency = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
 const productos = [
     { id: 1, nombre: "Bota cobra", imagenes: ["bota1.jpg"], descripcion: "Bota vaquera de piel de cobra.", stock: 0, precio: 8500, tipo: "Piel exótica" },
@@ -203,12 +204,16 @@ formularioQuejas.addEventListener("submit", async (evento) => {
         estadoQueja.textContent = "La página está abierta como archivo local. Para enviar, abre la tienda desde su sitio desplegado con /api/quejas activo.";
         return;
     }
+    if (!QUEJAS_API_URL) {
+        estadoQueja.textContent = "El servicio de quejas todavía no está conectado. Configura la URL pública de Cloudflare Worker.";
+        return;
+    }
     enviar.disabled = true;
     enviar.textContent = "Enviando…";
     estadoQueja.textContent = "";
 
     try {
-        const respuesta = await fetch("/api/quejas", {
+        const respuesta = await fetch(QUEJAS_API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)
